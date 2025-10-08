@@ -41,21 +41,17 @@ let div = document.querySelector("div");
 let divRock = document.getElementById("rock");
 let divPaper = document.getElementById("paper");
 let divScissors = document.getElementById("scissors");
+const resultsDiv = document.getElementById("results");
+const playAgainButton = document.getElementById("playAgain");
 
 div.addEventListener("click", (e) => {
   let humanChoice = e.target.id;
   let computerChoice = getComputerChoice();
-  let divHumanChoice = document.createElement("div");
-  let spanItem = document.createElement("span");
-  spanItem.textContent = `Your choice: ${humanChoice} `;
-  divHumanChoice.appendChild(spanItem);
-  div.appendChild(divHumanChoice);
   let resultMessage = playRound(humanChoice, computerChoice);
-  let divResult = document.createElement("div");
-  let spanResult = document.createElement("span");
-  spanResult.textContent = resultMessage;
-  divResult.appendChild(spanResult);
-  div.appendChild(divResult);
+  resultsDiv.innerHTML = `Your choice: ${humanChoice}<br>`;
+  resultsDiv.innerHTML += `Computer's choice: ${computerChoice}<br>`;
+  resultsDiv.innerHTML += `<b>${resultMessage}</b><br>`;
+  resultsDiv.innerHTML += `Score: You ${humanScore} - ${computerScore} Computer`;
 
   if (humanScore >= 5 || computerScore >= 5) {
     if (humanScore > computerScore) {
@@ -77,5 +73,19 @@ div.addEventListener("click", (e) => {
     paperButton.disabled = true;
     let scissorsButton = document.getElementById("scissors");
     scissorsButton.disabled = true;
+    playAgainButton.style.display = "block";
   }
 });
+function resetGame() {
+  humanScore = 0;
+  computerScore = 0;
+  let rockButton = document.getElementById("rock");
+  let paperButton = document.getElementById("paper");
+  let scissorsButton = document.getElementById("scissors");
+  rockButton.disabled = false;
+  paperButton.disabled = false;
+  scissorsButton.disabled = false;
+  resultsDiv.innerHTML = "";
+  playAgainButton.style.display = "none";
+}
+playAgainButton.addEventListener("click", resetGame);
